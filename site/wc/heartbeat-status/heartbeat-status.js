@@ -6,7 +6,10 @@ class HeartbeatStatus extends HTMLElement {
     this.attachShadow({ mode: "open" });
     this.polling = null;
     this.pending = false;
-    this.render("loading");
+    this.totalPings = 0;
+    this.successfulPings = 0;
+    this.render("loading", 0);
+    this.render();
   }
 
   connectedCallback() {
@@ -25,19 +28,28 @@ class HeartbeatStatus extends HTMLElement {
 
   async checkState() {
     this.pending = true;
+    this.totalPings++;
 
     const result = await sendHeartbeat();
+    console
 
-    if (result.status === "online" && result.data?.errorCode === 0) {
-      this.render('online');
+    if (result.status === "online" && result.data.errorCode === 0) {
+      this.successfulPings++;
+      this.render('online', this.getUptime());
     } else {
-      this.render('offline');
+      this.render('offline', this.getUptime());
     }
 
     this.pending = false;
   }
 
-  render(state) {
+  // on parlais que les jeune ne savent plus faire de moyenne...
+  getUptime() {
+    if (this.totalPings === 0) return 0;
+    return Math.round((this.successfulPings / this.totalPings) * 100);
+  }
+
+  render(state, uptime) {
     let color = "gray";
     let text = "Chargement...";
 
@@ -53,9 +65,14 @@ class HeartbeatStatus extends HTMLElement {
       <style>
         .status {
           display: flex;
-          align-items: center;
+          flex-direction: column;
           gap: 0.5em;
           font-family: sans-serif;
+        }
+        .state {
+          display: flex;
+          align-items: center;
+          gap: 0.5em;
         }
         .dot {
           width: 12px;
@@ -63,10 +80,17 @@ class HeartbeatStatus extends HTMLElement {
           border-radius: 50%;
           background-color: ${color};
         }
+        .uptime {
+          font-size: 0.9em;
+          color: #555;
+        }
       </style>
       <div class="status">
-        <span class="dot"></span>
-        <span>${text}</span>
+        <div class="state">
+          <span class="dot"></span>
+          <span>${text}</span>
+        </div>
+        <div class="uptime">Uptime : ${uptime}%</div>
       </div>
     `;
   }
