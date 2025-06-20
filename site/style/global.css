@@ -15,10 +15,3 @@ main * {
 .invisible {
   display: none;
 }
-
-.btn {
-  background-color: red;
-  color: white;
-  border-radius: 50%;
-  padding: 1em;
-}

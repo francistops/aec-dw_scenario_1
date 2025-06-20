@@ -1,40 +1,25 @@
-async function apiCall(resource, method, body = {}) {
-  let result = false;
-  const BASE_URL = "https://api.amelieroussin.ca/";
-  const apiUrl = `${BASE_URL}${resource}`;
-
-  const headers = {
-    "Content-type": "application/json",
-    Accept: "application/json",
-  };
-
-  const apiReq = {
-    method: method,
-    headers: headers,
-  };
-
-  if (method == "POST") apiReq["body"] = JSON.stringify(body);
-
-  const Response = await fetch(apiUrl, apiReq);
-
-  if (Response.ok) {
-    result = await Response.json();
-  }
-
-  return result;
-}
+const BASE_URL = "https://api.amelieroussin.ca/";
 
 export async function sendHeartbeat() {
-  let result = false;
+  const ctrl = new AbortController();
+  const timeoutId = setTimeout(() => ctrl.abort(), 3000);
 
-  const heartbeatResponse = await fetch("https://api.amelieroussin.ca/status/heartbeat");
+  try {
+    const response = await fetch(`${BASE_URL}status/heartbeat`, {
+      method: "GET",
+      signal: ctrl.signal,
+    });
 
-  if (heartbeatResponse.ok) {
-    const heartbeatJson = await heartbeatResponse.json();
-    if (heartbeatJson.errorCode == 0) {
-      result = true;
-    }
+    if (!response.ok || response.status >= 500) throw new Error("Server error");
+    else if (!response.ok || response.status >= 400)
+      throw new Error("Client error");
+    else if (!response.ok) throw new Error("Arcane error");
+
+    const data = await response.json();
+    return { status: "online", data };
+  } catch (error) {
+    return { status: "offline", error };
+  } finally {
+    clearTimeout(timeoutId);
   }
-
-  return result;
 }

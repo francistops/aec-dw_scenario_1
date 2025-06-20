@@ -4,7 +4,7 @@ const UNKNOWN_ERROR = {
   errorCode: 9999,
 };
 
-export async function heartbeat(req, res) {
+export function heartbeat(req, res) {
   let result = UNKNOWN_ERROR;
 
   try {
