@@ -11,20 +11,9 @@ app.use(cors({
 
 app.use(express.json());
 
-const negotiate = require('./middlewares/negotiate');
-app.use(negotiate);
 
-const authGuard = require('./middlewares/authGuard');
-
-
-const postRoute = require('./routers/postRoutes');
-app.use('/posts', postRoute);
-
-const userRoute = require('./routers/userRoutes');
-app.use('/users', authGuard.validateToken, userRoute);
-
-const loginRoute = require('./routers/loginRoutes');
-app.use('/', loginRoute);
+const statusRoute = require('./routers/statusRoutes');
+app.use('/status', statusRoute);
 
 
 app.listen(PORT, '0.0.0.0', () => {
