@@ -30,11 +30,9 @@ class HeartBeatWC extends HTMLElement {
 
       const sendHeartbeat_btn = this.shadowRoot.getElementById('sendHeartbeatBtn')
 
-      sendHeartbeat_btn.addEventListener('click', (e) => {
-        const result = sendHeartbeat()
-        const p_tag = document.createElement('p')
-        p_tag.innerHTML = result
-        sendHeartbeat_btn.after(p_tag)
+      sendHeartbeat_btn.addEventListener('click', async (e) => {
+        const result = await sendHeartbeat()
+        console.log(result)
       })
     }
   }

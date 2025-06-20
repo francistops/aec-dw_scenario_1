@@ -27,11 +27,14 @@ async function apiCall(resource, method, body = {}) {
 export async function sendHeartbeat() {
   let result = false;
 
-  const heatbeatResponse = await apiCall("/status/heartbeat", "GET");
+  const heartbeatResponse = await fetch("https://api.amelieroussin.ca/status/heartbeat");
 
-  if (heatbeatResponse.errorCode == 0) {
-    result = true;
+  if (heartbeatResponse.ok) {
+    const heartbeatJson = await heartbeatResponse.json();
+    if (heartbeatJson.errorCode == 0) {
+      result = true;
     }
+  }
 
   return result;
 }

@@ -1,10 +1,10 @@
-const express = require('express');
-const router = express.Router();
-const statusController = require('../controllers/statusController');
+import { Router } from 'express';
+const router = Router();
+import { heartbeat } from '../controllers/statusController.js';
 
 
-router.get('/', statusController.statusPage);
-router.get('/heartbeat', statusController.heartbeat)
+// router.get('/', statusController.statusPage);
+router.get('/heartbeat', heartbeat)
 
 
-module.exports = router;
+export default router;

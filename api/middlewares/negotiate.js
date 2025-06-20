@@ -1,4 +1,4 @@
-const yaml = require('js-yaml')
+import { dump } from 'js-yaml';
 
 const formats = {
     'application/json' : {
@@ -7,15 +7,15 @@ const formats = {
     },
     'text/yaml' : {
         type: 'text/yaml',
-        render: (data) => yaml.dump(data),
+        render: (data) => dump(data),
     },
     'application/x-yaml': {
         type: 'text/yaml',
-        render: (data) => yaml.dump(data)
+        render: (data) => dump(data)
     }
 };
 
-module.exports = function negotiate(req, res, next) {
+export default function negotiate(req, res, next) {
     const accepted = req.accepts(Object.keys(formats));
 
     if (!accepted) {
