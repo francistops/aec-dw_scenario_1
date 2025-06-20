@@ -11,6 +11,8 @@ app.use(cors({
 
 app.use(express.json());
 
+const negotiate = require('./middlewares/negotiate');
+app.use(negotiate);
 
 const statusRoute = require('./routers/statusRoutes');
 app.use('/status', statusRoute);

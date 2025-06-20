@@ -8,22 +8,20 @@
   <link rel="stylesheet" href="/style/global.css">
 
   <script type="module" defer src="/script/app.js"></script>
-  <script type="module" src="/wc/status-page/status-page.js"></script>
+  <!-- <script type="module" src="/wc/status-page/status-page.js"></script> -->
+  <script type="module" src="/wc/heart-beat/heart-beat.js"></script>
 </head>
-
-
-<body>
-  <header>
-    <div id="isConnected" style="color: red; font-size: x-large;">not connected</div>
-  </header>
-  <main>
 
     <!-- I want to display both timer 5 and 15sec, 
    a reponse time in ms, as will as a basic graph and uptime % -->
+<body>
+  <header>
+    <div id="isConnected" style="color: red; font-size: x-large;">not connected</div>
+    <button id="indexdeleteFileBtn" class="btn">index: delete file</button>
+    <button id="indexrestoreFileBtn" class="btn" style="background-color: green;">index: restore file</button>
+  </header>
+  <main>
 
-    <button id="deleteFileBtn" class="btn">delete file</button>
-
-    <button id="restoreFileBtn" class="btn" style="background-color: green;">restore file</button>
 
   </main>
 </body>

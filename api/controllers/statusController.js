@@ -1,3 +1,4 @@
+
 const UNKNOWN_ERROR = {
   message: "Unknown error",
   errorCode: 9999,
@@ -32,14 +33,19 @@ exports.statusPage = async (req, res) => {
 
 exports.heartbeat = async (req, res) => {
   let result = UNKNOWN_ERROR;
-  const { ids, nbRequested } = req.body;
 
   try {
-    const heartbeat = await fetch('../../SUPERDUPERIMPORTANTFILE');
-    result = {
-      message: "Success",
-      errorCode: 0,
-    };
+    const response = await fetch("", {});
+    console.log(response);
+
+    if (response.ok) {
+      const responseJson = await response.json();
+      result = {
+        message: "Success",
+        errorCode: 0,
+        response: responseJson,
+      };
+    }
   } catch (error) {
     console.error("DB error", error);
     result.message = `Database error ${error}`;

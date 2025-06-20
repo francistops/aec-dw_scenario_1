@@ -1,4 +1,4 @@
-async function apiCall(resource, method, auth, body = {}) {
+async function apiCall(resource, method, body = {}) {
   let result = false;
   const BASE_URL = "https://api.amelieroussin.ca/";
   const apiUrl = `${BASE_URL}${resource}`;
@@ -15,12 +15,6 @@ async function apiCall(resource, method, auth, body = {}) {
 
   if (method == "POST") apiReq["body"] = JSON.stringify(body);
 
-  if (auth) {
-    if (isIdentified()) {
-      headers["Authorization"] = `Bearer ${getConnectedUser().tokenUuid}`;
-    } else throw new Error("Empty token while required...");
-  }
-
   const Response = await fetch(apiUrl, apiReq);
 
   if (Response.ok) {
@@ -30,32 +24,14 @@ async function apiCall(resource, method, auth, body = {}) {
   return result;
 }
 
-export function getConnectedUser() {
-  return JSON.parse(localStorage.getItem("user"));
-}
-
-export function isIdentified() {
-  return getConnectedUser() !== null;
-}
-
-export async function login(user) {
-  console.log("in auth.js login");
-
+export async function sendHeartbeat() {
   let result = false;
 
-  const loginResult = await apiCall("login", "POST", false, user);
+  const heatbeatResponse = await apiCall("/status/heartbeat", "GET");
 
-  if (loginResult.errorCode == 0) {
+  if (heatbeatResponse.errorCode == 0) {
     result = true;
-    localStorage.setItem("user", JSON.stringify(loginResult.token));
-
-    const event = new CustomEvent("auth-logedin", {});
-    document.dispatchEvent(new CustomEvent("auth-logedin", {}));
-
-    if (!window.location.hash || window.location.hash === "") {
-      window.location.hash = "#blog";
     }
-  }
 
   return result;
 }
