@@ -1,0 +1,17 @@
+body {
+  margin: 0;
+  background-color: #111;
+  color: white;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+main * {
+  margin: 10px;
+}
+
+.invisible {
+  display: none;
+}
