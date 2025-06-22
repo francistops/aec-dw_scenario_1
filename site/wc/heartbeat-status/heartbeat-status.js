@@ -16,7 +16,6 @@ class HeartbeatStatus extends HTMLElement {
     this.totalPings = 0;
     this.successfulPings = 0;
     this.render("loading", 0);
-    this.render();
   }
 
   connectedCallback() {
@@ -28,7 +27,7 @@ class HeartbeatStatus extends HTMLElement {
       }
     }, 5000);
 
-    // this.checkState();
+    this.checkState();
   }
 
   disconnectedCallback() {
@@ -97,7 +96,7 @@ class HeartbeatStatus extends HTMLElement {
           <span class="dot"></span>
           <span>${text}</span>
         </div>
-        <div class="uptime">Uptime : ${uptime || 0}%</div>
+        <div class="uptime">Uptime : ${uptime}%</div>
       </div>
     `;
   }
