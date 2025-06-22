@@ -1,3 +1,10 @@
+// used AI to get another way to do a WC, end up keeping it due to simplicy and readability.
+// it's remind me that I can create and use property.
+// got recommended setInterval by the AI and it made sense and operate similarly to a timeout.
+// a;so incorporate all the html in one method which is how I would think is the less tedious and more readeable based on our chat in class.
+
+
+
 import { sendHeartbeat } from "../../script/auth.js";
 
 class HeartbeatStatus extends HTMLElement {
@@ -13,13 +20,15 @@ class HeartbeatStatus extends HTMLElement {
   }
 
   connectedCallback() {
+    
     this.polling = setInterval(() => {
+      console.log(this.polling + ' ' + this.pending)
       if (!this.pending) {
         this.checkState();
       }
     }, 5000);
 
-    this.checkState();
+    // this.checkState();
   }
 
   disconnectedCallback() {
@@ -30,20 +39,19 @@ class HeartbeatStatus extends HTMLElement {
     this.pending = true;
     this.totalPings++;
 
+    // pour le ?. it's kinda neat soo i had to include it https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining
     const result = await sendHeartbeat();
-    console
-
-    if (result.status === "online" && result.data.errorCode === 0) {
+    if (result.status === "online" && result.data?.errorCode === 0) {
       this.successfulPings++;
-      this.render('online', this.getUptime());
+      this.render('online', this.getUptime?.());
     } else {
-      this.render('offline', this.getUptime());
+      this.render('offline', this.getUptime?.());
     }
 
     this.pending = false;
+    console.log('statechecked ', result.status)
   }
 
-  // on parlais que les jeune ne savent plus faire de moyenne...
   getUptime() {
     if (this.totalPings === 0) return 0;
     return Math.round((this.successfulPings / this.totalPings) * 100);
@@ -67,7 +75,6 @@ class HeartbeatStatus extends HTMLElement {
           display: flex;
           flex-direction: column;
           gap: 0.5em;
-          font-family: sans-serif;
         }
         .state {
           display: flex;
@@ -90,7 +97,7 @@ class HeartbeatStatus extends HTMLElement {
           <span class="dot"></span>
           <span>${text}</span>
         </div>
-        <div class="uptime">Uptime : ${uptime}%</div>
+        <div class="uptime">Uptime : ${uptime || 0}%</div>
       </div>
     `;
   }
