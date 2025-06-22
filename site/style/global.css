@@ -1,15 +1,11 @@
 body {
-  margin: 0;
+  margin-inline: 2rem ;
   background-color: #111;
   color: white;
 }
 
 html {
   scroll-behavior: smooth;
-}
-
-main * {
-  margin: 10px;
 }
 
 .invisible {

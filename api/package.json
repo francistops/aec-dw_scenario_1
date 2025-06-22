@@ -1,8 +1,9 @@
 {
     "name": "amelieroussin.ca",
     "version": "0.0.1",
-    "description": "Notre API utilisons Express",
+    "description": "Notre API heartbeat",
     "main": "server.js",
+    "type": "module",
     "scripts": {
         "start": "node server.js",
         "dev": "nodemon"
